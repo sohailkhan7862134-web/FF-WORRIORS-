@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FF-WORRIORS | Admin</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#09090b;
+ color:white
+}
+button,input,textarea,select{font:inherit}
+.login{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px
+}
+.login-card,.card{
+ background:#15151a;
+ border:1px solid #29292f;
+ border-radius:18px;
+ padding:22px
+}
+.login-card{
+ width:100%;
+ max-width:390px;
+ text-align:center
+}
+.logo{font-size:40px}
+input,textarea,select{
+ width:100%;
+ padding:13px;
+ margin:8px 0;
+ border:1px solid #333;
+ border-radius:10px;
+ background:#222229;
+ color:white;
+ outline:none
+}
+button{
+ width:100%;
+ padding:13px;
+ margin-top:10px;
+ border:0;
+ border-radius:10px;
+ background:#ff7a00;
+ color:white;
+ font-weight:bold;
+ cursor:pointer
+}
+.danger{background:#d62828}
+.success{background:#16a34a}
+.muted{color:#999}
+.error{color:#ff5555;display:none;margin-top:10px}
+
+#panel{display:none}
+header{
+ padding:16px 20px;
+ background:#15151a;
+ border-bottom:1px solid #29292f;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ position:sticky;
+ top:0;
+ z-index:5
+}
+header h2{margin:0}
+.logout{
+ width:auto;
+ margin:0;
+ padding:9px 15px
+}
+.container{
+ width:100%;
+ max-width:900px;
+ margin:auto;
+ padding:20px
+}
+.card{margin-bottom:18px}
+.card h3{margin-top:0}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:10px
+}
+.qr-preview{
+ display:block;
+ width:220px;
+ max-width:100%;
+ margin:15px auto;
+ border-radius:14px;
+ background:white;
+ padding:8px;
+ display:none
+}
+.status{
+ margin-top:10px;
+ color:#5ee27a
+}
+.player{
+ background:#222229;
+ border-radius:10px;
+ padding:12px;
+ margin-top:10px
+}
+.player button{
+ margin-top:8px
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="loginPage">
+ <div class="login-card">
+   <div class="logo">🎮</div>
+   <h2>FF-WORRIORS</h2>
+   <p class="muted">Admin Panel</p>
+
+   <input
+     id="adminPassword"
+     type="password"
+     placeholder="Admin Password"
+     autocomplete="off"
+   >
+
+   <button onclick="login()">LOGIN</button>
+
+   <div class="error" id="loginError">
+     Wrong password!
+   </div>
+ </div>
+</section>
+
+
+<!-- PANEL -->
+<section id="panel">
+
+<header>
+ <h2>⚡ Admin Panel</h2>
+ <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+<!-- QR -->
+<div class="card">
+ <h3>💳 Payment QR Code</h3>
+ <p class="muted">
+   Yahan se payment QR select karke save karo.
+ </p>
+
+ <input
+   type="file"
+   id="qrInput"
+   accept="image/png,image/jpeg,image/webp"
+ >
+
+ <img id="qrPreview" class="qr-preview">
+
+ <button class="success" onclick="saveQR()">
+   💾 Save / Update QR
+ </button>
+
+ <div class="status" id="qrStatus"></div>
+</div>
+
+
+<!-- UPI -->
+<div class="card">
+ <h3>📱 UPI Payment</h3>
+
+ <input
+   id="upiId"
+   placeholder="UPI ID"
+ >
+
+ <button class="success" onclick="saveUPI()">
+   Save UPI ID
+ </button>
+
+ <div class="status" id="upiStatus"></div>
+</div>
+
+
+<!-- TOURNAMENT -->
+<div class="card">
+ <h3>🏆 Tournament Settings</h3>
+
+ <div class="grid">
+
+   <div>
+    <label>1v1 Entry</label>
+    <input id="oneEntry" type="number" value="20">
+   </div>
+
+   <div>
+    <label>1v1 Prize</label>
+    <input id="onePrize" type="number" value="40">
+   </div>
+
+   <div>
+    <label>2v2 Entry</label>
+    <input id="twoEntry" type="number" value="40">
+   </div>
+
+   <div>
+    <label>2v2 Prize</label>
+    <input id="twoPrize" type="number" value="70">
+   </div>
+
+   <div>
+    <label>Squad Entry / Person</label>
+    <input id="squadEntry" type="number" value="40">
+   </div>
+
+   <div>
+    <label>Squad Prize</label>
+    <input id="squadPrize" type="number" value="250">
+   </div>
+
+ </div>
+
+ <button class="success" onclick="saveTournament()">
+   💾 Save Tournament Settings
+ </button>
+
+ <div class="status" id="tournamentStatus"></div>
+</div>
+
+
+<!-- NOTICE -->
+<div class="card">
+ <h3>📢 Notice</h3>
+
+ <textarea
+   id="notice"
+   rows="4"
+   placeholder="Tournament notice..."
+ ></textarea>
+
+ <button class="success" onclick="saveNotice()">
+   Save Notice
+ </button>
+
+ <div class="status" id="noticeStatus"></div>
+</div>
+
+
+<!-- CONTACT -->
+<div class="card">
+ <h3>📞 Contact</h3>
+
+ <input id="whatsapp" placeholder="WhatsApp link">
+ <input id="telegram" placeholder="Telegram link">
+
+ <button class="success" onclick="saveContact()">
+   Save Contact
+ </button>
+
+ <div class="status" id="contactStatus"></div>
+</div>
+
+
+<!-- PLAYERS -->
+<div class="card">
+ <h3>👥 Players</h3>
+
+ <input id="playerName" placeholder="Player name">
+ <input id="playerUID" placeholder="Free Fire UID">
+
+ <select id="playerMode">
+   <option value="1v1">1v1</option>
+   <option value="2v2">2v2</option>
+   <option value="Squad">Squad</option>
+ </select>
+
+ <button onclick="addPlayer()">➕ Add Player</button>
+
+ <div id="playerList"></div>
+</div>
+
+
+<!-- WINNER -->
+<div class="card">
+ <h3>🏅 Winner</h3>
+
+ <input
+   id="winnerName"
+   placeholder="Winner name / UID"
+ >
+
+ <button class="success" onclick="saveWinner()">
+   Publish Winner
+ </button>
+
+ <div class="status" id="winnerStatus"></div>
+</div>
+
+</div>
+</section>
+
+
+<script>
+
+/* =========================
+   ADMIN PASSWORD
+========================= */
+
+const ADMIN_PASSWORD = "Sohailkhan78654";
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+ const password =
+   document.getElementById("adminPassword").value;
+
+ if(password === ADMIN_PASSWORD){
+
+   document.getElementById("loginPage").style.display="none";
+   document.getElementById("panel").style.display="block";
+
+   loadAll();
+
+ }else{
+
+   document.getElementById("loginError").style.display="block";
+
+ }
+
+}
+
+
+document.getElementById("adminPassword")
+.addEventListener("keydown",function(e){
+
+ if(e.key==="Enter") login();
+
+});
+
+
+function logout(){
+
+ document.getElementById("panel").style.display="none";
+ document.getElementById("loginPage").style.display="flex";
+
+ document.getElementById("adminPassword").value="";
+
+}
+
+
+/* =========================
+   QR
+========================= */
+
+document.getElementById("qrInput")
+.addEventListener("change",function(){
+
+ const file=this.files[0];
+
+ if(!file)return;
+
+ const reader=new FileReader();
+
+ reader.onload=function(e){
+
+   const preview =
+     document.getElementById("qrPreview");
+
+   preview.src=e.target.result;
+   preview.style.display="block";
+
+ };
+
+ reader.readAsDataURL(file);
+
+});
+
+
+function saveQR(){
+
+ const preview =
+   document.getElementById("qrPreview");
+
+ if(!preview.src){
+
+   alert("Pehle QR image select karo.");
+   return;
+
+ }
+
+ localStorage.setItem(
+   "FF_WORRIORS_QR",
+   preview.src
+ );
+
+ document.getElementById("qrStatus").innerText =
+   "✅ QR saved.";
+
+}
+
+
+/* =========================
+   UPI
+========================= */
+
+function saveUPI(){
+
+ const upi =
+   document.getElementById("upiId").value.trim();
+
+ localStorage.setItem(
+   "FF_WORRIORS_UPI",
+   upi
+ );
+
+ document.getElementById("upiStatus").innerText =
+   "✅ UPI ID saved.";
+
+}
+
+
+/* =========================
+   TOURNAMENT
+========================= */
+
+function saveTournament(){
+
+ const data={
+
+   oneEntry:
+     document.getElementById("oneEntry").value,
+
+   onePrize:
+     document.getElementById("onePrize").value,
+
+   twoEntry:
+     document.getElementById("twoEntry").value,
+
+   twoPrize:
+     document.getElementById("twoPrize").value,
+
+   squadEntry:
+     document.getElementById("squadEntry").value,
+
+   squadPrize:
+     document.getElementById("squadPrize").value
+
+ };
+
+ localStorage.setItem(
+   "FF_WORRIORS_TOURNAMENT",
+   JSON.stringify(data)
+ );
+
+ document.getElementById("tournamentStatus").innerText =
+   "✅ Tournament settings saved.";
+
+}
+
+
+/* =========================
+   NOTICE
+========================= */
+
+function saveNotice(){
+
+ const notice =
+   document.getElementById("notice").value;
+
+ localStorage.setItem(
+   "FF_WORRIORS_NOTICE",
+   notice
+ );
+
+ document.getElementById("noticeStatus").innerText =
+   "✅ Notice saved.";
+
+}
+
+
+/* =========================
+   CONTACT
+========================= */
+
+function saveContact(){
+
+ const data={
+
+   whatsapp:
+     document.getElementById("whatsapp").value,
+
+   telegram:
+     document.getElementById("telegram").value
+
+ };
+
+ localStorage.setItem(
+   "FF_WORRIORS_CONTACT",
+   JSON.stringify(data)
+ );
+
+ document.getElementById("contactStatus").innerText =
+   "✅ Contact saved.";
+
+}
+
+
+/* =========================
+   PLAYERS
+========================= */
+
+function addPlayer(){
+
+ const name =
+   document.getElementById("playerName").value.trim();
+
+ const uid =
+   document.getElementById("playerUID").value.trim();
+
+ const mode =
+   document.getElementById("playerMode").value;
+
+ if(!name || !uid){
+
+   alert("Player name aur UID daalo.");
+   return;
+
+ }
+
+ let players =
+   JSON.parse(
+     localStorage.getItem("FF_WORRIORS_PLAYERS")
+     || "[]"
+   );
+
+ players.push({
+   name:name,
+   uid:uid,
+   mode:mode
+ });
+
+ localStorage.setItem(
+   "FF_WORRIORS_PLAYERS",
+   JSON.stringify(players)
+ );
+
+ document.getElementById("playerName").value="";
+ document.getElementById("playerUID").value="";
+
+ showPlayers();
+
+}
+
+
+function showPlayers(){
+
+ const box =
+   document.getElementById("playerList");
+
+ const players =
+   JSON.parse(
+     localStorage.getItem("FF_WORRIORS_PLAYERS")
+     || "[]"
+   );
+
+ box.innerHTML="";
+
+ players.forEach(function(player,index){
+
+   const div =
+     document.createElement("div");
+
+   div.className="player";
+
+   div.innerHTML=
+     "<b>"+escapeHTML(player.name)+"</b><br>"+
+     "UID: "+escapeHTML(player.uid)+"<br>"+
+     "Mode: "+escapeHTML(player.mode)+
+     '<button class="danger" onclick="deletePlayer('+index+')">Delete</button>';
+
+   box.appendChild(div);
+
+ });
+
+}
+
+
+function deletePlayer(index){
+
+ let players =
+   JSON.parse(
+     localStorage.getItem("FF_WORRIORS_PLAYERS")
+     || "[]"
+   );
+
+ players.splice(index,1);
+
+ localStorage.setItem(
+   "FF_WORRIORS_PLAYERS",
+   JSON.stringify(players)
+ );
+
+ showPlayers();
+
+}
+
+
+/* =========================
+   WINNER
+========================= */
+
+function saveWinner(){
+
+ const winner =
+   document.getElementById("winnerName").value.trim();
+
+ localStorage.setItem(
+   "FF_WORRIORS_WINNER",
+   winner
+ );
+
+ document.getElementById("winnerStatus").innerText =
+   "✅ Winner published.";
+
+}
+
+
+/* =========================
+   LOAD
+========================= */
+
+function loadAll(){
+
+ const qr =
+   localStorage.getItem("FF_WORRIORS_QR");
+
+ if(qr){
+
+   document.getElementById("qrPreview").src=qr;
+   document.getElementById("qrPreview").style.display="block";
+
+ }
+
+
+ document.getElementById("upiId").value =
+   localStorage.getItem("FF_WORRIORS_UPI") || "";
+
+
+ const tournament =
+   JSON.parse(
+     localStorage.getItem("FF_WORRIORS_TOURNAMENT")
+     || "null"
+   );
+
+ if(tournament){
+
+   document.getElementById("oneEntry").value =
+     tournament.oneEntry;
+
+   document.getElementById("onePrize").value =
+     tournament.onePrize;
+
+   document.getElementById("twoEntry").value =
+     tournament.twoEntry;
+
+   document.getElementById("twoPrize").value =
+     tournament.twoPrize;
+
+   document.getElementById("squadEntry").value =
+     tournament.squadEntry;
+
+   document.getElementById("squadPrize").value =
+     tournament.squadPrize;
+
+ }
+
+
+ document.getElementById("notice").value =
+   localStorage.getItem("FF_WORRIORS_NOTICE") || "";
+
+
+ const contact =
+   JSON.parse(
+     localStorage.getItem("FF_WORRIORS_CONTACT")
+     || "null"
+   );
+
+ if(contact){
+
+   document.getElementById("whatsapp").value =
+     contact.whatsapp || "";
+
+   document.getElementById("telegram").value =
+     contact.telegram || "";
+
+ }
+
+
+ document.getElementById("winnerName").value =
+   localStorage.getItem("FF_WORRIORS_WINNER") || "";
+
+
+ showPlayers();
+
+}
+
+
+/* =========================
+   SECURITY HELPER
+========================= */
+
+function escapeHTML(text){
+
+ return String(text)
+   .replaceAll("&","&amp;")
+   .replaceAll("<","&lt;")
+   .replaceAll(">","&gt;")
+   .replaceAll('"',"&quot;")
+   .replaceAll("'","&#039;");
+
+}
+
+</script>
+
+</body>
+  </html>
