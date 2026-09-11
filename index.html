@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bihari Deluxe Tournament</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#080d18;
+    color:white;
+}
+header{
+    background:#121a2b;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.logo{font-size:20px;font-weight:bold}
+.founder{font-size:12px;color:#aeb9d0}
+
+.hero{
+    text-align:center;
+    padding:50px 20px;
+    background:linear-gradient(135deg,#17284b,#101626);
+}
+.hero h1{font-size:35px;margin:0 0 10px}
+.hero p{color:#b9c6dd}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:25px 18px;
+}
+
+.card{
+    background:#141e32;
+    border:1px solid #2b3b5e;
+    border-radius:16px;
+    padding:20px;
+}
+
+.form{
+    max-width:550px;
+    margin:20px auto;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    margin:7px 0;
+    border-radius:9px;
+    border:1px solid #3a4a6b;
+    background:#0c1322;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    border:0;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:16px;
+}
+
+.tag{
+    background:#243656;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+}
+
+.price{
+    font-size:25px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.muted{color:#aab7d0}
+.notice{
+    background:#202f4e;
+    padding:13px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+.hidden{display:none}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#8997b0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">BIHARI DELUXE</div>
+    <div class="founder">Founder: Sohail Khan</div>
+</header>
+
+<!-- SIGN UP -->
+
+<div id="signup">
+
+<section class="hero">
+    <h1>Free Fire Tournament</h1>
+    <p>Create your account to continue</p>
+</section>
+
+<div class="container">
+
+<div class="card form">
+
+<h2>Create Account</h2>
+
+<form id="signupForm">
+
+<input id="first" placeholder="First Name" required>
+
+<input id="last" placeholder="Last Name" required>
+
+<input id="username" placeholder="Username" required>
+
+<input id="phone" type="tel" placeholder="Phone Number" required>
+
+<input id="email" type="email" placeholder="Email ID" required>
+
+<input id="promo" placeholder="Promo Code (Optional)">
+
+<button type="submit">SIGN UP</button>
+
+</form>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- MAIN WEBSITE -->
+
+<div id="app" class="hidden">
+
+<section class="hero">
+
+<h1>Welcome, <span id="welcome"></span> 👋</h1>
+
+<p>Choose your Free Fire Tournament</p>
+
+</section>
+
+
+<div class="container">
+
+<div class="notice">
+
+⚠️ Registration will be confirmed after payment verification.
+
+</div>
+
+
+<h2>🏆 Available Tournaments</h2>
+
+
+<div class="grid">
+
+
+<!-- BERMUDA -->
+
+<div class="card">
+
+<span class="tag">BATTLE ROYALE</span>
+
+<h2>🗺️ Bermuda Full Map</h2>
+
+<p class="muted">48 Players</p>
+
+<div class="price">₹35 Entry</div>
+
+<p>
+🔫 ₹25 Per Kill<br>
+🏆 ₹350 Booyah
+</p>
+
+<button onclick="joinTournament('Bermuda Full Map','₹35')">
+JOIN TOURNAMENT
+</button>
+
+</div>
+
+
+<!-- 4V4 -->
+
+<div class="card">
+
+<span class="tag">CUSTOM</span>
+
+<h2>⚔️ Custom 4v4</h2>
+
+<p class="muted">₹50 Per Person</p>
+
+<div class="price">₹200 Full Team</div>
+
+<p>
+👥 4 Players<br>
+🏆 ₹350 Winner Prize
+</p>
+
+<button onclick="joinTournament('Custom 4v4','₹50/person')">
+JOIN TOURNAMENT
+</button>
+
+</div>
+
+
+<!-- LONE WOLF -->
+
+<div class="card">
+
+<span class="tag">1 VS 1</span>
+
+<h2>🐺 Lone Wolf 1v1</h2>
+
+<p class="muted">2 Players</p>
+
+<div class="price">₹50 Entry</div>
+
+<p>
+🥊 1 vs 1<br>
+🏆 ₹80 Winner Prize
+</p>
+
+<button onclick="joinTournament('Lone Wolf 1v1','₹50')">
+JOIN TOURNAMENT
+</button>
+
+</div>
+
+</div>
+
+
+<!-- REGISTRATION -->
+
+<div id="registration" class="card form hidden">
+
+<h2>📝 Tournament Registration</h2>
+
+<p id="selected"></p>
+
+<input id="ign" placeholder="Free Fire In-Game Name">
+
+<input id="uid" placeholder="Free Fire UID">
+
+<input id="contact" placeholder="Contact Number">
+
+
+<h3>💳 Payment</h3>
+
+<div class="notice">
+
+<b>Payment Section</b><br><br>
+
+Your UPI ID / QR Code will be placed here.
+
+<br><br>
+
+Pay the tournament entry fee and enter your transaction details below.
+
+</div>
+
+<input id="transaction"
+placeholder="Transaction ID">
+
+<label>Payment Screenshot</label>
+
+<input id="screenshot" type="file" accept="image/*">
+
+<button onclick="submitRegistration()">
+
+SUBMIT REGISTRATION
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 2026 Bihari Deluxe Tournament<br>
+Founder: Sohail Khan
+
+</footer>
+
+
+<script>
+
+let selectedTournament = "";
+
+document.getElementById("signupForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+document.getElementById("signup").classList.add("hidden");
+
+document.getElementById("app").classList.remove("hidden");
+
+document.getElementById("welcome").innerText =
+document.getElementById("username").value;
+
+});
+
+
+function joinTournament(name,fee){
+
+selectedTournament = name + " — " + fee;
+
+document.getElementById("registration")
+.classList.remove("hidden");
+
+document.getElementById("selected").innerText =
+"Selected Tournament: " + selectedTournament;
+
+document.getElementById("registration")
+.scrollIntoView({behavior:"smooth"});
+
+}
+
+
+function submitRegistration(){
+
+let ign = document.getElementById("ign").value;
+let uid = document.getElementById("uid").value;
+let contact = document.getElementById("contact").value;
+
+if(!ign || !uid || !contact){
+
+alert("Please fill all registration details.");
+
+return;
+
+}
+
+alert(
+"Registration submitted successfully!\\n\\n" +
+"Organizer verification is required."
+);
+
+}
+
+</script>
+
+</body>
+  </html>
