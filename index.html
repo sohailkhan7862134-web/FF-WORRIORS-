@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Battle Arena</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#0b0d12;
+    color:white;
+}
+
+.header{
+    padding:22px 15px;
+    text-align:center;
+    background:#151923;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.container{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+    padding:15px;
+}
+
+.card{
+    background:#171b25;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:15px;
+    border:1px solid #292f3c;
+}
+
+.card h2{
+    font-size:19px;
+    margin-bottom:10px;
+}
+
+.info{
+    color:#b9bec9;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.status{
+    display:inline-block;
+    margin-top:12px;
+    padding:7px 12px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.upcoming{
+    background:#16456d;
+}
+
+.live{
+    background:#7a2020;
+}
+
+.full{
+    background:#555;
+}
+
+.room{
+    margin-top:15px;
+    padding:13px;
+    background:#0e1118;
+    border-radius:10px;
+    line-height:2;
+}
+
+.room b{
+    color:#ff8a00;
+}
+
+.progress{
+    height:7px;
+    background:#303542;
+    border-radius:10px;
+    margin-top:12px;
+}
+
+.progress div{
+    height:100%;
+    width:60%;
+    background:#ff7900;
+    border-radius:10px;
+}
+
+.menu{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:12px 15px;
+    background:#11141c;
+}
+
+.menu button{
+    border:0;
+    padding:10px 16px;
+    border-radius:20px;
+    background:#292e39;
+    color:white;
+    white-space:nowrap;
+}
+
+.menu button:hover{
+    background:#ff7900;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.empty{
+    text-align:center;
+    padding:40px 10px;
+    color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    🏆 BATTLE ARENA
+</div>
+
+<div class="menu">
+
+<button onclick="openTab('upcoming')">
+Upcoming
+</button>
+
+<button onclick="openTab('live')">
+🔴 Live
+</button>
+
+<button onclick="openTab('full')">
+Full
+</button>
+
+<button onclick="openTab('completed')">
+Completed
+</button>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- UPCOMING -->
+
+<div id="upcoming" class="section active">
+
+<div class="card">
+
+<h2>🎮 Free Fire Match #01</h2>
+
+<div class="info">
+
+🕐 Time: 03:00 PM<br>
+
+👥 Players: 18 / 48<br>
+
+⏱️ Next match: 20 minutes
+
+</div>
+
+<span class="status upcoming">
+UPCOMING
+</span>
+
+<div class="progress">
+<div></div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🎮 Free Fire Match #02</h2>
+
+<div class="info">
+
+🕐 Time: 03:20 PM<br>
+
+👥 Players: 35 / 48<br>
+
+⏱️ 20 minute interval
+
+</div>
+
+<span class="status upcoming">
+UPCOMING
+</span>
+
+<div class="progress">
+<div style="width:73%"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LIVE -->
+
+<div id="live" class="section">
+
+<div class="card">
+
+<h2>🔴 Free Fire Match #00</h2>
+
+<div class="info">
+
+🕐 Time: 02:40 PM<br>
+
+👥 Players: 48 / 48
+
+</div>
+
+<span class="status live">
+LIVE NOW
+</span>
+
+
+<div class="room">
+
+<b>Room ID:</b> 12345678<br>
+
+<b>Password:</b> DEMO123
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FULL -->
+
+<div id="full" class="section">
+
+<div class="card">
+
+<h2>🎮 Free Fire Match #03</h2>
+
+<div class="info">
+
+🕐 Time: 04:00 PM<br>
+
+👥 Players: 48 / 48
+
+</div>
+
+<span class="status full">
+FULL
+</span>
+
+<div class="progress">
+
+<div style="width:100%"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- COMPLETED -->
+
+<div id="completed" class="section">
+
+<div class="card">
+
+<h2>🎮 Free Fire Match #00</h2>
+
+<div class="info">
+
+🕐 Time: 02:20 PM<br>
+
+👥 Players: 48 / 48<br>
+
+✅ Match completed
+
+</div>
+
+<span class="status full">
+COMPLETED
+</span>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+function openTab(name){
+
+let sections =
+document.querySelectorAll(".section");
+
+sections.forEach(function(section){
+
+section.classList.remove("active");
+
+});
+
+document
+.getElementById(name)
+.classList.add("active");
+
+}
+
+</script>
+
+</body>
+</html>
