@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF WARRIORS - Admin Panel</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#0b0f19;
+  color:white;
+}
+
+header{
+  background:#151b2b;
+  padding:18px;
+  text-align:center;
+  border-bottom:1px solid #29334d;
+}
+
+header h1{
+  color:#ffb000;
+  font-size:25px;
+}
+
+header p{
+  color:#aaa;
+  margin-top:5px;
+}
+
+.container{
+  width:95%;
+  max-width:1000px;
+  margin:20px auto;
+}
+
+.card{
+  background:#151b2b;
+  padding:20px;
+  border-radius:14px;
+  margin-bottom:20px;
+  border:1px solid #29334d;
+}
+
+.card h2{
+  color:#ffb000;
+  margin-bottom:15px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  margin:7px 0 12px;
+  border-radius:8px;
+  border:1px solid #35415e;
+  background:#0c1220;
+  color:white;
+  outline:none;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:8px;
+  background:#ffb000;
+  color:#111;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.stat{
+  background:#0c1220;
+  padding:18px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat b{
+  display:block;
+  font-size:25px;
+  color:#ffb000;
+  margin-bottom:5px;
+}
+
+.tournament{
+  background:#0c1220;
+  padding:15px;
+  border-radius:10px;
+  margin-top:10px;
+  border-left:4px solid #ffb000;
+}
+
+.tournament h3{
+  margin-bottom:8px;
+}
+
+.small{
+  color:#aaa;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.danger{
+  background:#d93636;
+  color:white;
+}
+
+.success{
+  background:#1f9d55;
+  color:white;
+}
+
+label{
+  color:#ddd;
+  font-size:14px;
+}
+
+@media(max-width:600px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔥 FF WARRIORS</h1>
+  <p>Admin Control Panel</p>
+</header>
+
+<div class="container">
+
+  <!-- DASHBOARD -->
+  <div class="card">
+    <h2>📊 Dashboard</h2>
+
+    <div class="stats">
+      <div class="stat">
+        <b id="totalTournament">0</b>
+        Tournaments
+      </div>
+
+      <div class="stat">
+        <b id="totalResult">0</b>
+        Results
+      </div>
+
+      <div class="stat">
+        <b id="totalAnnouncement">0</b>
+        Announcements
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CREATE TOURNAMENT -->
+  <div class="card">
+    <h2>🏆 Create Tournament</h2>
+
+    <label>Tournament Name</label>
+    <input id="tName" placeholder="Example: FF WARRIORS 1v1">
+
+    <label>Game Mode</label>
+    <select id="tMode">
+      <option>1v1</option>
+      <option>2v2</option>
+      <option>Squad</option>
+      <option>Custom</option>
+    </select>
+
+    <label>Entry Information</label>
+    <input id="tEntry" placeholder="Example: Entry ₹20">
+
+    <label>Prize Information</label>
+    <input id="tPrize" placeholder="Example: Winner ₹40">
+
+    <label>Date & Time</label>
+    <input id="tDate" type="datetime-local">
+
+    <button onclick="createTournament()">➕ Create Tournament</button>
+  </div>
+
+
+  <!-- TOURNAMENT LIST -->
+  <div class="card">
+    <h2>📋 Tournament List</h2>
+    <div id="tournamentList">
+      <p class="small">No tournaments created yet.</p>
+    </div>
+  </div>
+
+
+  <!-- PAYMENT INFORMATION -->
+  <div class="card">
+    <h2>💳 Payment Information</h2>
+
+    <label>UPI ID</label>
+    <input id="upi" placeholder="yourupi@bank">
+
+    <label>Payment Note</label>
+    <textarea id="paymentNote"
+      placeholder="Payment information shown to players"></textarea>
+
+    <label>QR Image URL</label>
+    <input id="qrUrl"
+      placeholder="Paste your QR image URL">
+
+    <button onclick="savePayment()">💾 Save Payment Information</button>
+
+    <p class="small" style="margin-top:10px;">
+      This section is for displaying payment information/QR to players.
+    </p>
+  </div>
+
+
+  <!-- RESULT -->
+  <div class="card">
+    <h2>🥇 Add Result</h2>
+
+    <label>Tournament</label>
+    <input id="rTournament" placeholder="Tournament name">
+
+    <label>Winner / Result</label>
+    <input id="rWinner" placeholder="Winner name or result">
+
+    <label>Details</label>
+    <textarea id="rDetails"
+      placeholder="Match result details"></textarea>
+
+    <button onclick="addResult()">➕ Add Result</button>
+  </div>
+
+
+  <!-- ANNOUNCEMENT -->
+  <div class="card">
+    <h2>📢 Announcement</h2>
+
+    <label>Announcement</label>
+    <textarea id="announcement"
+      placeholder="Write announcement for players"></textarea>
+
+    <button onclick="addAnnouncement()">📢 Publish Announcement</button>
+
+    <div id="announcementList" style="margin-top:15px;"></div>
+  </div>
+
+
+  <!-- SOCIAL LINKS -->
+  <div class="card">
+    <h2>🔗 Social Media</h2>
+
+    <label>Instagram Link</label>
+    <input id="instagram"
+      value="https://www.instagram.com/exotic_sohail_782">
+
+    <label>YouTube Link</label>
+    <input id="youtube"
+      placeholder="Paste YouTube channel link">
+
+    <button onclick="saveSocial()">💾 Save Social Links</button>
+  </div>
+
+
+  <!-- ADMIN SETTINGS -->
+  <div class="card">
+    <h2>⚙️ Admin Settings</h2>
+
+    <label>Admin Name</label>
+    <input id="adminName"
+      value="biharideluxbhaiya">
+
+    <button onclick="saveAdmin()">💾 Save Settings</button>
+
+    <button class="danger" onclick="clearData()">
+      🗑️ Clear Local Data
+    </button>
+
+    <p class="small" style="margin-top:12px;">
+      Current version stores data locally on this device.
+      Later we will connect this panel with the Player App database.
+    </p>
+  </div>
+
+</div>
+
+
+<script>
+
+let tournaments =
+  JSON.parse(localStorage.getItem("ff_tournaments")) || [];
+
+let results =
+  JSON.parse(localStorage.getItem("ff_results")) || [];
+
+let announcements =
+  JSON.parse(localStorage.getItem("ff_announcements")) || [];
+
+
+function updateDashboard(){
+
+  document.getElementById("totalTournament").innerText =
+    tournaments.length;
+
+  document.getElementById("totalResult").innerText =
+    results.length;
+
+  document.getElementById("totalAnnouncement").innerText =
+    announcements.length;
+}
+
+
+function createTournament(){
+
+  let name =
+    document.getElementById("tName").value.trim();
+
+  let mode =
+    document.getElementById("tMode").value;
+
+  let entry =
+    document.getElementById("tEntry").value.trim();
+
+  let prize =
+    document.getElementById("tPrize").value.trim();
+
+  let date =
+    document.getElementById("tDate").value;
+
+  if(!name){
+    alert("Tournament name enter karo.");
+    return;
+  }
+
+  tournaments.push({
+    name:name,
+    mode:mode,
+    entry:entry,
+    prize:prize,
+    date:date
+  });
+
+  localStorage.setItem(
+    "ff_tournaments",
+    JSON.stringify(tournaments)
+  );
+
+  document.getElementById("tName").value="";
+  document.getElementById("tEntry").value="";
+  document.getElementById("tPrize").value="";
+  document.getElementById("tDate").value="";
+
+  renderTournaments();
+  updateDashboard();
+
+  alert("Tournament created!");
+}
+
+
+function renderTournaments(){
+
+  let box =
+    document.getElementById("tournamentList");
+
+  if(tournaments.length===0){
+    box.innerHTML =
+      '<p class="small">No tournaments created yet.</p>';
+    return;
+  }
+
+  box.innerHTML="";
+
+  tournaments.forEach((t,index)=>{
+
+    box.innerHTML += `
+      <div class="tournament">
+        <h3>🏆 ${t.name}</h3>
+
+        <p class="small">
+          Mode: ${t.mode}<br>
+          ${t.entry || "Entry information not added"}<br>
+          ${t.prize || "Prize information not added"}<br>
+          ${t.date || "Date not added"}
+        </p>
+
+        <button class="danger"
+          onclick="deleteTournament(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+
+function deleteTournament(index){
+
+  if(!confirm("Delete this tournament?")){
+    return;
+  }
+
+  tournaments.splice(index,1);
+
+  localStorage.setItem(
+    "ff_tournaments",
+    JSON.stringify(tournaments)
+  );
+
+  renderTournaments();
+  updateDashboard();
+}
+
+
+function savePayment(){
+
+  let data={
+    upi:document.getElementById("upi").value,
+    note:document.getElementById("paymentNote").value,
+    qr:document.getElementById("qrUrl").value
+  };
+
+  localStorage.setItem(
+    "ff_payment",
+    JSON.stringify(data)
+  );
+
+  alert("Payment information saved!");
+}
+
+
+function addResult(){
+
+  let tournament =
+    document.getElementById("rTournament").value.trim();
+
+  let winner =
+    document.getElementById("rWinner").value.trim();
+
+  let details =
+    document.getElementById("rDetails").value.trim();
+
+  if(!tournament || !winner){
+    alert("Tournament aur winner details enter karo.");
+    return;
+  }
+
+  results.push({
+    tournament:tournament,
+    winner:winner,
+    details:details
+  });
+
+  localStorage.setItem(
+    "ff_results",
+    JSON.stringify(results)
+  );
+
+  document.getElementById("rTournament").value="";
+  document.getElementById("rWinner").value="";
+  document.getElementById("rDetails").value="";
+
+  updateDashboard();
+
+  alert("Result added!");
+}
+
+
+function addAnnouncement(){
+
+  let text =
+    document.getElementById("announcement").value.trim();
+
+  if(!text){
+    alert("Announcement likho.");
+    return;
+  }
+
+  announcements.push({
+    text:text,
+    time:new Date().toLocaleString()
+  });
+
+  localStorage.setItem(
+    "ff_announcements",
+    JSON.stringify(announcements)
+  );
+
+  document.getElementById("announcement").value="";
+
+  renderAnnouncements();
+  updateDashboard();
+
+  alert("Announcement published!");
+}
+
+
+function renderAnnouncements(){
+
+  let box =
+    document.getElementById("announcementList");
+
+  box.innerHTML="";
+
+  announcements.forEach(a=>{
+
+    box.innerHTML += `
+      <div class="tournament">
+        📢 ${a.text}
+        <div class="small">${a.time}</div>
+      </div>
+    `;
+
+  });
+}
+
+
+function saveSocial(){
+
+  let data={
+    instagram:
+      document.getElementById("instagram").value,
+
+    youtube:
+      document.getElementById("youtube").value
+  };
+
+  localStorage.setItem(
+    "ff_social",
+    JSON.stringify(data)
+  );
+
+  alert("Social links saved!");
+}
+
+
+function saveAdmin(){
+
+  let name =
+    document.getElementById("adminName").value;
+
+  localStorage.setItem(
+    "ff_admin_name",
+    name
+  );
+
+  alert("Admin settings saved!");
+}
+
+
+function clearData(){
+
+  if(!confirm(
+    "Local tournament data clear karna hai?"
+  )){
+    return;
+  }
+
+  localStorage.removeItem("ff_tournaments");
+  localStorage.removeItem("ff_results");
+  localStorage.removeItem("ff_announcements");
+  localStorage.removeItem("ff_payment");
+  localStorage.removeItem("ff_social");
+
+  tournaments=[];
+  results=[];
+  announcements=[];
+
+  renderTournaments();
+  renderAnnouncements();
+  updateDashboard();
+
+  alert("Local data cleared.");
+}
+
+
+renderTournaments();
+renderAnnouncements();
+updateDashboard();
+
+</script>
+
+</body>
+</html>
