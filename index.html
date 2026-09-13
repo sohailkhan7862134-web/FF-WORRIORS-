@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d0d">
+<title>WinMax Tournament</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#090909;color:#fff;
+  font-family:Arial,sans-serif;
+  max-width:480px;margin:auto;
+  min-height:100vh;padding-bottom:75px
+}
+button{cursor:pointer;font:inherit;border:0}
+button:focus-visible{outline:2px solid white}
+.header{
+  display:flex;align-items:center;gap:10px;
+  padding:14px;background:#151515;
+  border-bottom:1px solid #292929
+}
+.avatar{
+  width:43px;height:43px;border-radius:50%;
+  background:#c91d25;display:grid;
+  place-items:center;font-weight:bold;font-size:19px
+}
+.user{flex:1;min-width:0}
+.user small{color:#aaa;font-size:12px}
+.user h3{font-size:16px;margin-top:3px}
+.brand{font-size:18px;font-weight:900;color:#ff3038}
+.wallet-mini{
+  background:#252525;padding:9px 11px;
+  border-radius:8px;font-weight:bold;
+  white-space:nowrap
+}
+.wallet-mini span{color:#ff4249}
+.page{display:none;padding:15px}
+.page.active{display:block}
+.notice{
+  background:#222;border-radius:9px;
+  padding:12px;margin-bottom:15px;
+  font-size:13px;color:#eee
+}
+.banner{
+  min-height:155px;border-radius:12px;
+  padding:20px;background:
+  linear-gradient(120deg,#7d1016,#e42b32 55%,#33090c);
+  display:flex;flex-direction:column;
+  justify-content:center;margin-bottom:16px;
+  border:1px solid #f0444b
+}
+.banner small{letter-spacing:3px}
+.banner h1{font-size:30px;font-weight:900;margin:8px 0}
+.banner p{font-size:13px}
+.quick{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:9px;margin-bottom:23px
+}
+.quick button{
+  background:#202020;color:white;
+  border-radius:9px;padding:14px 3px;
+  font-size:12px
+}
+.quick b{display:block;font-size:21px;margin-bottom:7px}
+.section-title{
+  display:flex;justify-content:space-between;
+  align-items:center;margin:16px 0 12px
+}
+.section-title h2{font-size:19px}
+.live{background:#178b43;padding:5px 10px;border-radius:5px;font-size:12px}
+.tournament{
+  background:#171717;border:1px solid #333;
+  border-radius:11px;overflow:hidden;margin-bottom:13px
+}
+.tournament img{
+  width:100%;height:130px;object-fit:cover;
+  background:#282828;display:block
+}
+.t-info{padding:12px}
+.t-info h3{font-size:16px;margin-bottom:8px}
+.meta{display:flex;justify-content:space-between;gap:8px;
+  font-size:12px;color:#aaa;margin-bottom:12px}
+.play{
+  width:100%;background:#e92a32;color:white;
+  padding:11px;border-radius:7px;font-weight:bold
+}
+.fair{color:#57d78b;font-size:11px;margin-bottom:9px}
+.back{
+  background:#242424;color:white;padding:9px 13px;
+  border-radius:7px;margin-bottom:17px
+}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.game-card{
+  background:#181818;border:1px solid #333;
+  border-radius:11px;overflow:hidden
+}
+.game-card img{width:100%;height:105px;object-fit:cover;background:#292929}
+.game-card h3{font-size:13px;padding:10px 8px 5px}
+.online{font-size:11px;color:#aaa;padding:0 8px 10px}
+.online i{display:inline-block;width:7px;height:7px;
+  border-radius:50%;background:#2bd66a;margin-right:5px}
+.game-card button{margin:0 8px 10px;width:calc(100% - 16px)}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:9px;margin:15px 0
+}
+.stat{background:#1c1c1c;border-radius:9px;padding:14px 5px;text-align:center}
+.stat strong{display:block;font-size:20px;color:#ff4149;margin-bottom:5px}
+.stat small{color:#aaa;font-size:11px}
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+.green,.yellow{padding:12px;border-radius:8px;font-weight:bold}
+.green{background:#16a34a;color:white}
+.yellow{background:#f2c51c;color:#111}
+.wallet-card{
+  background:#1b1b1b;border:1px solid #333;
+  border-radius:11px;padding:16px;margin-bottom:13px
+}
+.wallet-card h3{margin-bottom:12px}
+.coins{font-size:29px;font-weight:bold;color:#ff4149}
+.note{font-size:12px;color:#aaa;margin-top:10px}
+.deal{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;background:#202020;padding:13px;
+  border-radius:9px;margin-top:9px
+}
+.deal small{display:block;color:#aaa;margin-top:4px}
+.deal button{background:#e52b32;color:white;padding:9px 12px;border-radius:7px}
+.profile-head{text-align:center;padding:20px}
+.profile-head .avatar{margin:0 auto 10px;width:70px;height:70px;font-size:27px}
+.menu-item{
+  width:100%;text-align:left;background:#1b1b1b;
+  color:white;padding:16px;border-radius:8px;
+  margin-bottom:9px;display:flex;justify-content:space-between
+}
+.bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:#171717;
+  border-top:1px solid #333;display:grid;
+  grid-template-columns:repeat(5,1fr);padding:8px 3px;
+  z-index:5
+}
+.bottom button{background:none;color:#aaa;font-size:11px;padding:5px 0}
+.bottom button span{display:block;font-size:19px;margin-bottom:4px}
+.bottom button.active{color:#ff4149}
+.bottom .home-icon{
+  background:#d9232b;color:white;border-radius:50%;
+  width:43px;height:43px;margin:auto;font-size:22px
+}
+.bottom .home-label{margin-top:3px}
+.modal{
+  display:none;position:fixed;inset:0;background:#000b;
+  z-index:10;align-items:center;justify-content:center;padding:18px
+}
+.modal.show{display:flex}
+.modal-box{
+  width:100%;max-width:420px;background:#1a1a1a;
+  border:1px solid #444;border-radius:13px;padding:20px
+}
+.modal-box h2{margin-bottom:15px}
+.modal-box input{
+  width:100%;padding:12px;margin:8px 0;
+  background:#292929;border:1px solid #444;
+  color:white;border-radius:7px
+}
+.close{float:right;background:none;color:#fff;font-size:24px}
+@media(min-width:481px){
+  body{border-left:1px solid #222;border-right:1px solid #222}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="avatar">W</div>
+  <div class="user">
+    <small>WinMax</small>
+    <h3 id="username">sohail_07</h3>
+  </div>
+  <div class="brand">WINMAX</div>
+  <button class="wallet-mini" onclick="showPage('wallet')">
+    ₹<span id="balance">5.00</span> ＋
+  </button>
+</header>
+
+<main>
+  <section id="home" class="page active">
+    <div class="notice">🔔 Withdraw Complete ✅ In Just 12 Hours...</div>
+
+    <div class="banner">
+      <small>WELCOME TO</small>
+      <h1>WINMAX</h1>
+      <p>PLAY • COMPETE • WIN</p>
+    </div>
+
+    <div class="quick">
+      <button onclick="showPage('wallet')"><b>◉</b>Wallet</button>
+      <button onclick="alert('Instagram link admin panel se set hoga')"><b>◎</b>Instagram</button>
+      <button onclick="alert('YouTube link admin panel se set hoga')"><b>▶</b>YouTube</button>
+      <button onclick="alert('Support link admin panel se set hoga')"><b>🎧</b>Support</button>
+    </div>
+
+    <div class="section-title">
+      <h2>E-Sports Games</h2>
+      <span class="live">● LIVE</span>
+    </div>
+    <p style="color:#aaa;font-size:13px;margin-bottom:13px">Big winnings for all</p>
+
+    <article class="tournament">
+      <img src="https://placehold.co/600x240/241013/ffffff?text=FREE+FIRE" alt="Free Fire tournament">
+      <div class="t-info">
+        <div class="fair">✓ FairPlay ON</div>
+        <h3>FREE FIRE</h3>
+        <div class="meta"><span>Online Tournament</span><span>● LIVE</span></div>
+        <button class="play" onclick="showPage('games')">PLAY</button>
+      </div>
+    </article>
+  </section>
+
+  <section id="games" class="page">
+    <button class="back" onclick="showPage('home')">← Back</button>
+    <h2 style="margin-bottom:17px">FREE FIRE</h2>
+
+    <div class="game-grid">
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=FULL+MAP" alt="Full Map">
+        <h3>FULL MAP</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('FULL MAP')">PLAY</button>
+      </div>
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=CLASH+SQUAD" alt="Clash Squad">
+        <h3>CLASH SQUAD</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('CLASH SQUAD')">PLAY</button>
+      </div>
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=LONE+WOLF" alt="Lone Wolf">
+        <h3>LONE WOLF</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('LONE WOLF')">PLAY</button>
+      </div>
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=FULL+MAP+2" alt="Full Map 2">
+        <h3>FULL MAP²</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('FULL MAP²')">PLAY</button>
+      </div>
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=CS+2+VS+2" alt="CS 2 vs 2">
+        <h3>CS 2 VS 2</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('CS 2 VS 2')">PLAY</button>
+      </div>
+      <div class="game-card">
+        <img src="https://placehold.co/300x180/251016/ffffff?text=LW+2+VS+2" alt="LW 2 vs 2">
+        <h3>LW 2 VS 2</h3><div class="online"><i></i>Online Players</div>
+        <button class="play" onclick="openTournament('LW 2 VS 2')">PLAY</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="wallet" class="page">
+    <div class="section-title">
+      <h2>Wallet</h2>
+      <button class="back" onclick="alert('Transaction history backend se connect hoga')">History</button>
+    </div>
+
+    <div class="wallet-card">
+      <h3>Account Stats</h3>
+      <div class="coins">🪙 <span id="coinBalance">5</span></div>
+      <div class="action-row">
+        <button class="green" onclick="openModal('deposit')">＋ Add Coins</button>
+        <button class="yellow" onclick="openModal('redeem')">Redeem</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><strong id="deposited">5</strong><small>Deposited</small></div>
+      <div class="stat"><strong id="winning">0</strong><small>Winning</small></div>
+      <div class="stat"><strong id="bonus">0</strong><small>Bonus</small></div>
+    </div>
+
+    <p class="note">Note: Only winnings can be redeemed.</p>
+
+    <div class="section-title"><h2>Top-up Deals</h2></div>
+    <div class="deal">
+      <div><b>22 Coins</b><small>+20 Extra</small></div>
+      <button onclick="depositPackage(200)">₹200</button>
+    </div>
+    <div class="deal">
+      <div><b>44 Coins</b><small>+40 Extra</small></div>
+      <button onclick="depositPackage(400)">₹400</button>
+    </div>
+  </section>
+
+  <section id="profile" class="page">
+    <div class="profile-head">
+      <div class="avatar">S</div>
+      <h2 id="profileName">sohail_07</h2>
+      <p style="color:#aaa;margin-top:7px">ID: 10001</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>0</strong><small>Matches</small></div>
+      <div class="stat"><strong>0</strong><small>Wins</small></div>
+      <div class="stat"><strong>0%</strong><small>Win %</small></div>
+    </div>
+    <button class="menu-item" onclick="showPage('wallet')">Wallet Coins <span>→</span></button>
+    <button class="menu-item" onclick="alert('Transaction History')">Transaction History <span>→</span></button>
+    <button class="menu-item" onclick="alert('Leaderboard')">Leaderboard <span>→</span></button>
+    <button class="menu-item" onclick="alert('Refer & Earn')">Refer & Earn <span>→</span></button>
+    <button class="menu-item" onclick="alert('Settings')">Settings <span>→</span></button>
+  </section>
+</main>
+
+<nav class="bottom">
+  <button onclick="alert('Offers')" id="nav-offers"><span>🎁</span>Offers</button>
+  <button onclick="alert('Rank')" id="nav-rank"><span>🏆</span>Rank</button>
+  <button onclick="showPage('home')" id="nav-home" class="active">
+    <span class="home-icon">⌂</span><div class="home-label">Home</div>
+  </button>
+  <button onclick="showPage('wallet')" id="nav-wallet"><span>▣</span>Wallet</button>
+  <button onclick="showPage('profile')" id="nav-profile"><span>♙</span>Profile</button>
+</nav>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()">×</button>
+    <h2 id="modalTitle">Deposit</h2>
+    <p id="modalDescription" style="color:#aaa;font-size:13px;margin-bottom:10px"></p>
+    <input id="amount" type="number" min="1" placeholder="Enter amount">
+    <input id="upi" type="text" placeholder="Enter your UPI ID">
+    <button class="play" onclick="submitRequest()">Submit Request</button>
+    <p id="modalMessage" class="note" aria-live="polite"></p>
+  </div>
+</div>
+
+<script>
+let balance = 5;
+let winning = 0;
+let deposited = 5;
+let selectedTournament = "";
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+  const nav=document.getElementById("nav-"+id);
+  if(nav)nav.classList.add("active");
+
+  window.scrollTo(0,0);
+}
+
+function updateWallet(){
+  document.getElementById("balance").textContent=balance.toFixed(2);
+  document.getElementById("coinBalance").textContent=balance;
+  document.getElementById("deposited").textContent=deposited;
+  document.getElementById("winning").textContent=winning;
+}
+
+function openTournament(name){
+  selectedTournament=name;
+  alert(name+" selected. Tournament details aur joining backend se connect honge.");
+}
+
+function openModal(type){
+  document.getElementById("modal").classList.add("show");
+  document.getElementById("modalTitle").textContent=
+    type==="deposit"?"Add Coins":"Redeem";
+  document.getElementById("modalDescription").textContent=
+    type==="deposit"?"UPI deposit request":"Only winnings can be redeemed.";
+  document.getElementById("modal").dataset.type=type;
+  document.getElementById("modalMessage").textContent="";
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("show");
+}
+
+function depositPackage(amount){
+  openModal("deposit");
+  document.getElementById("amount").value=amount;
+}
+
+function submitRequest(){
+  const type=document.getElementById("modal").dataset.type;
+  const amount=Number(document.getElementById("amount").value);
+  const upi=document.getElementById("upi").value.trim();
+  const message=document.getElementById("modalMessage");
+
+  if(!Number.isFinite(amount)||amount<=0){
+    message.textContent="Valid amount enter karein.";
+    return;
+  }
+  if(!upi||!upi.includes("@")){
+    message.textContent="Valid UPI ID enter karein.";
+    return;
+  }
+  if(type==="redeem"){
+    if(amount>winning){
+      message.textContent="Insufficient winning balance.";
+      return;
+    }
+    message.textContent="Withdrawal request demo mein submit nahi hoti. Backend required.";
+    return;
+  }
+
+  message.textContent="Deposit request demo mein submit nahi hoti. Secure payment backend required.";
+}
+
+updateWallet();
+</script>
+</body>
+</html>
